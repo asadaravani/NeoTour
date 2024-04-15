@@ -21,6 +21,8 @@ public class ProductDTO {
     private String imagePath;
     private List<Review> reviews;
     private BigDecimal OrderCount;
-    private double rating;
+    private Double rating;
+    private String season;
+
 
 }

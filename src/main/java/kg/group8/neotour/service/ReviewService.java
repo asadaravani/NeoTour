@@ -34,6 +34,10 @@ public class ReviewService {
         Review savedReview = reviewsRepository.save(review);
 
         product.getReviews().add(savedReview);
+
+        //update product's rating
+        product.updateRatingAndReviewCount();
+
         productRepository.save(product);
 
         return "Comment added successfully";

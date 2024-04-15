@@ -6,9 +6,9 @@ import kg.group8.neotour.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
+
 @RestController
 @RequestMapping("api/products")
 @AllArgsConstructor
@@ -16,31 +16,28 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductService productService;
-    @GetMapping
-    public List<ProductDTO> getAllProducts(){
-        return productService.getAllProducts();
-    }
-    @GetMapping("popular")
+
+    @GetMapping("/popular")
     public List<ProductDTO> getPopularProducts(){
         return productService.getPopularProducts();
     }
-    @GetMapping("mostVisited")
+    @GetMapping("/mostVisited")
     public List<ProductDTO> getMostVisitedProducts(){
         return productService.getMostVisitedProducts();
     }
-    @GetMapping("featured")
+    @GetMapping("/featured")
     public List<ProductDTO> getFeaturedProducts(){
         return productService.getFeaturedProducts();
     }
-    @GetMapping("europe")
+    @GetMapping("/europe")
     public List<ProductDTO> getEuropeanProducts(){
         return productService.getEuropeanProducts();
     }
-    @GetMapping("asia")
+    @GetMapping("/asia")
     public List<ProductDTO> getAsianProducts(){
         return productService.getAsianProducts();
     }
-    @GetMapping("recommended")
+    @GetMapping("/recommended")
     public List<ProductDTO> getRecommendedProducts(){
         return productService.getRecommendedProducts();
     }
@@ -48,6 +45,16 @@ public class ProductController {
     @GetMapping("{id}")
     public Optional<Product> findProductById(@PathVariable Long id){
         return productService.findProductById(id);
+    }
+
+    /**
+     Below endpoints for the developer only
+     **/
+
+
+    @PostMapping("/addProductList")
+    public ResponseEntity<?> addProduct(@RequestBody List<ProductDTO> products){
+        return ResponseEntity.ok(productService.addProductList(products));
     }
 
     @PostMapping("/addProduct")

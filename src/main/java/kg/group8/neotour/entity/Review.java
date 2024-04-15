@@ -20,7 +20,7 @@ public class Review {
     private String reviewer;
 
     @Column
-    private double rating;
+    private Double rating;
 
     @Column
     private String comment;

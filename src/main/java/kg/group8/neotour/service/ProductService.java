@@ -18,13 +18,6 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private ProductRepository productRepository;
-    public List<ProductDTO> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
-                .map(this::mapProductToDTO)
-                .collect(Collectors.toList());
-
-    }
 
     public List<ProductDTO> getPopularProducts(){
         List<Product> popularProducts = productRepository.findPopularProducts();
@@ -33,12 +26,10 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
     public List<ProductDTO> getMostVisitedProducts(){
-        ProductDTO p1 = new ProductDTO();
-        ProductDTO p2 = new ProductDTO();
-        List<ProductDTO> ans = new ArrayList<>(2);
-        ans.add(p1);
-        ans.add(p2);
-        return ans;
+        List<Product> mostVisitedProducts = productRepository.findMostVisitedProducts();
+        return mostVisitedProducts.stream()
+                .map(this::mapProductToDTO)
+                .collect(Collectors.toList());
     }
     public List<ProductDTO> getFeaturedProducts(){
         ProductDTO p1 = new ProductDTO();
@@ -72,10 +63,20 @@ public class ProductService {
         ans.add(p2);
         return ans;
     }
-
-
     public Optional<Product> findProductById(Long id){
         return this.productRepository.findById(id);
+    }
+
+
+    /**
+     Below endpoints for the developer only
+     **/
+
+    public String addProductList(List<ProductDTO> products){
+        for (ProductDTO productDTO : products) {
+            addProduct(productDTO);
+        }
+        return "Successfully added products";
     }
     public Product addProduct(ProductDTO productDTO) throws EmptyFieldException {
         if (isEmptyOrNull(productDTO.getName()) ||
@@ -144,6 +145,7 @@ public class ProductService {
         productDTO.setRating(product.getRating());
         productDTO.setOrderCount(product.getOrderCount());
         productDTO.setReviews(product.getReviews());
+        productDTO.setName(product.getSeason());
         return productDTO;
     }
 }

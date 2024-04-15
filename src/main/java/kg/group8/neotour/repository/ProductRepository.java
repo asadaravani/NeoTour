@@ -10,22 +10,22 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT p FROM Product p ORDER BY p.rating DESC")
+    @Query("SELECT p FROM Product p ORDER BY p.rating DESC, p.reviewCount DESC")
     List<Product> findPopularProducts();
 
-    @Query("SELECT p FROM Product p ORDER BY p.rating DESC")
-    public List<ProductDTO> getMostVisitedProducts();
+    @Query("SELECT p FROM Product p ORDER BY p.orderCount DESC")
+    List<Product> findMostVisitedProducts();
 
     @Query("SELECT p FROM Product p ORDER BY p.rating DESC")
-    public List<ProductDTO> getFeaturedProducts();
+    List<Product> getFeaturedProducts();
 
     @Query("SELECT p FROM Product p ORDER BY p.rating DESC")
-    public List<ProductDTO> getEuropeanProducts();
+    List<Product> getEuropeanProducts();
 
     @Query("SELECT p FROM Product p ORDER BY p.rating DESC")
-    public List<ProductDTO> getAsianProducts();
+    List<Product> getAsianProducts();
 
     @Query("SELECT p FROM Product p ORDER BY p.rating DESC")
-    public List<ProductDTO> getRecommendedProducts();
+    List<Product> getRecommendedProducts();
 
 }
