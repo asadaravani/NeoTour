@@ -1,6 +1,5 @@
 package kg.group8.neotour.repository;
 
-import kg.group8.neotour.DTO.ProductDTO;
 import kg.group8.neotour.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,16 +15,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p ORDER BY p.orderCount DESC")
     List<Product> findMostVisitedProducts();
 
-    @Query("SELECT p FROM Product p ORDER BY p.rating DESC")
-    List<Product> getFeaturedProducts();
+    @Query("SELECT p FROM Product p ORDER BY p.orderCount ASC")
+    List<Product> findFeaturedProducts();
+
+    @Query("SELECT p FROM Product p WHERE p.continent = 'Europe'")
+    List<Product> findEuropeanProducts();
+
+    @Query("SELECT p FROM Product p WHERE p.continent = 'Asia'")
+    List<Product> findAsianProducts();
 
     @Query("SELECT p FROM Product p ORDER BY p.rating DESC")
-    List<Product> getEuropeanProducts();
-
-    @Query("SELECT p FROM Product p ORDER BY p.rating DESC")
-    List<Product> getAsianProducts();
-
-    @Query("SELECT p FROM Product p ORDER BY p.rating DESC")
-    List<Product> getRecommendedProducts();
+    List<Product> findRecommendedProducts();
 
 }

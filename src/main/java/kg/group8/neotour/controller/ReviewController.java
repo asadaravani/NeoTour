@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/reviews")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class ReviewController {
     private final ReviewService reviewService;
     @GetMapping

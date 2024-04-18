@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("")
+@RestController()
 @RequestMapping("api/bookings")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class BookingController {
 
     private final BookingService bookingService;

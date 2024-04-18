@@ -1,14 +1,14 @@
 package kg.group8.neotour.service;
 
-import kg.group8.neotour.DTO.ProductDTO;
+import kg.group8.neotour.DTO.ProductDetailDTO;
+import kg.group8.neotour.DTO.ProductRequestDTO;
+import kg.group8.neotour.DTO.ProductPreviewDTO;
 import kg.group8.neotour.entity.Product;
 import kg.group8.neotour.exception.EmptyFieldException;
 import kg.group8.neotour.exception.ProductNotFoundException;
 import kg.group8.neotour.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,52 +19,49 @@ public class ProductService {
 
     private ProductRepository productRepository;
 
-    public List<ProductDTO> getPopularProducts(){
+    public List<ProductPreviewDTO> getPopularProducts(){
         List<Product> popularProducts = productRepository.findPopularProducts();
         return popularProducts.stream()
                 .map(this::mapProductToDTO)
                 .collect(Collectors.toList());
     }
-    public List<ProductDTO> getMostVisitedProducts(){
+    public List<ProductPreviewDTO> getMostVisitedProducts(){
         List<Product> mostVisitedProducts = productRepository.findMostVisitedProducts();
         return mostVisitedProducts.stream()
                 .map(this::mapProductToDTO)
                 .collect(Collectors.toList());
     }
-    public List<ProductDTO> getFeaturedProducts(){
-        ProductDTO p1 = new ProductDTO();
-        ProductDTO p2 = new ProductDTO();
-        List<ProductDTO> ans = new ArrayList<>(2);
-        ans.add(p1);
-        ans.add(p2);
-        return ans;
+    public List<ProductPreviewDTO> getFeaturedProducts(){
+        List<Product> featuredProducts = productRepository.findFeaturedProducts();
+        return featuredProducts.stream()
+                .map(this::mapProductToDTO)
+                .collect(Collectors.toList());
     }
-    public List<ProductDTO> getEuropeanProducts(){
-        ProductDTO p1 = new ProductDTO();
-        ProductDTO p2 = new ProductDTO();
-        List<ProductDTO> ans = new ArrayList<>(2);
-        ans.add(p1);
-        ans.add(p2);
-        return ans;
+    public List<ProductPreviewDTO> getEuropeanProducts(){
+        List<Product> europeanProducts = productRepository.findEuropeanProducts();
+        return europeanProducts.stream()
+                .map(this::mapProductToDTO)
+                .collect(Collectors.toList());
     }
-    public List<ProductDTO> getAsianProducts(){
-        ProductDTO p1 = new ProductDTO();
-        ProductDTO p2 = new ProductDTO();
-        List<ProductDTO> ans = new ArrayList<>(2);
-        ans.add(p1);
-        ans.add(p2);
-        return ans;
+    public List<ProductPreviewDTO> getAsianProducts(){
+        List<Product> asianProducts = productRepository.findAsianProducts();
+        return asianProducts.stream()
+                .map(this::mapProductToDTO)
+                .collect(Collectors.toList());
     }
-    public List<ProductDTO> getRecommendedProducts(){
-        ProductDTO p1 = new ProductDTO();
-        ProductDTO p2 = new ProductDTO();
-        List<ProductDTO> ans = new ArrayList<>(2);
-        ans.add(p1);
-        ans.add(p2);
-        return ans;
+    public List<ProductPreviewDTO> getRecommendedProducts(){
+        return null;
     }
-    public Optional<Product> findProductById(Long id){
-        return this.productRepository.findById(id);
+    public ProductDetailDTO findProductById(Long id)throws ProductNotFoundException {
+        Optional<Product> productOptional = productRepository.findById(id);
+        Product product = productOptional.orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
+        ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+        productDetailDTO.setId(product.getId());
+        productDetailDTO.setName(product.getName());
+        productDetailDTO.setDescription(product.getDescription());
+        productDetailDTO.setImagePath(product.getImagePath());
+        productDetailDTO.setReviews(product.getReviews());
+        return productDetailDTO;
     }
 
 
@@ -72,39 +69,39 @@ public class ProductService {
      Below endpoints for the developer only
      **/
 
-    public String addProductList(List<ProductDTO> products){
-        for (ProductDTO productDTO : products) {
-            addProduct(productDTO);
+    public String addProductList(List<ProductRequestDTO> products){
+        for (ProductRequestDTO productRequestDTO : products) {
+            addProduct(productRequestDTO);
         }
         return "Successfully added products";
     }
-    public Product addProduct(ProductDTO productDTO) throws EmptyFieldException {
-        if (isEmptyOrNull(productDTO.getName()) ||
-                isEmptyOrNull(productDTO.getLocation()) ||
-                isEmptyOrNull(productDTO.getContinent()) ||
-                isEmptyOrNull(productDTO.getDescription()) ||
-                isEmptyOrNull(productDTO.getImagePath())) {
+    public Product addProduct(ProductRequestDTO productRequestDTO) throws EmptyFieldException {
+        if (isEmptyOrNull(productRequestDTO.getName()) ||
+                isEmptyOrNull(productRequestDTO.getLocation()) ||
+                isEmptyOrNull(productRequestDTO.getContinent()) ||
+                isEmptyOrNull(productRequestDTO.getDescription()) ||
+                isEmptyOrNull(productRequestDTO.getImagePath())) {
             throw new EmptyFieldException("All fields must be filled");
         }
         else{
             Product product = new Product();
-            product.setName(productDTO.getName());
-            product.setLocation(productDTO.getLocation());
-            product.setContinent(productDTO.getContinent());
-            product.setDescription(productDTO.getDescription());
-            product.setImagePath(productDTO.getImagePath());
+            product.setName(productRequestDTO.getName());
+            product.setLocation(productRequestDTO.getLocation());
+            product.setContinent(productRequestDTO.getContinent());
+            product.setDescription(productRequestDTO.getDescription());
+            product.setImagePath(productRequestDTO.getImagePath());
             this.productRepository.save(product);
             return product;
         }
     }
-    public Product updateProduct(ProductDTO productDTO) {
-        Optional<Product> product = productRepository.findById(productDTO.getId());
+    public Product updateProduct(ProductRequestDTO productRequestDTO) {
+        Optional<Product> product = productRepository.findById(productRequestDTO.getId());
         if(product.isPresent()){
             Product updateProduct = product.get();
-            updateProduct.setName(productDTO.getName());
-            updateProduct.setDescription(productDTO.getDescription());
-            updateProduct.setLocation(productDTO.getLocation());
-            updateProduct.setContinent(productDTO.getContinent());
+            updateProduct.setName(productRequestDTO.getName());
+            updateProduct.setDescription(productRequestDTO.getDescription());
+            updateProduct.setLocation(productRequestDTO.getLocation());
+            updateProduct.setContinent(productRequestDTO.getContinent());
             this.productRepository.save(updateProduct);
             return updateProduct;
         }
@@ -134,18 +131,11 @@ public class ProductService {
     private boolean isEmptyOrNull(String str) {
         return str == null || str.trim().isEmpty();
     }
-    private ProductDTO mapProductToDTO(Product product) {
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setId(product.getId());
-        productDTO.setName(product.getName());
-        productDTO.setLocation(product.getLocation());
-        productDTO.setContinent(product.getContinent());
-        productDTO.setDescription(product.getDescription());
-        productDTO.setImagePath(product.getImagePath());
-        productDTO.setRating(product.getRating());
-        productDTO.setOrderCount(product.getOrderCount());
-        productDTO.setReviews(product.getReviews());
-        productDTO.setName(product.getSeason());
-        return productDTO;
+    private ProductPreviewDTO mapProductToDTO(Product product) {
+        ProductPreviewDTO productPreviewDTO = new ProductPreviewDTO();
+        productPreviewDTO.setId(product.getId());
+        productPreviewDTO.setName(product.getName());
+        productPreviewDTO.setImagePath(product.getImagePath());
+        return productPreviewDTO;
     }
 }

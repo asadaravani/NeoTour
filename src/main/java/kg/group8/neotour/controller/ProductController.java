@@ -1,13 +1,14 @@
 package kg.group8.neotour.controller;
 
-import kg.group8.neotour.DTO.ProductDTO;
+import kg.group8.neotour.DTO.ProductDetailDTO;
+import kg.group8.neotour.DTO.ProductRequestDTO;
+import kg.group8.neotour.DTO.ProductPreviewDTO;
 import kg.group8.neotour.entity.Product;
 import kg.group8.neotour.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/products")
@@ -18,32 +19,32 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/popular")
-    public List<ProductDTO> getPopularProducts(){
+    public List<ProductPreviewDTO> getPopularProducts(){
         return productService.getPopularProducts();
     }
     @GetMapping("/mostVisited")
-    public List<ProductDTO> getMostVisitedProducts(){
+    public List<ProductPreviewDTO> getMostVisitedProducts(){
         return productService.getMostVisitedProducts();
     }
     @GetMapping("/featured")
-    public List<ProductDTO> getFeaturedProducts(){
+    public List<ProductPreviewDTO> getFeaturedProducts(){
         return productService.getFeaturedProducts();
     }
     @GetMapping("/europe")
-    public List<ProductDTO> getEuropeanProducts(){
+    public List<ProductPreviewDTO> getEuropeanProducts(){
         return productService.getEuropeanProducts();
     }
     @GetMapping("/asia")
-    public List<ProductDTO> getAsianProducts(){
+    public List<ProductPreviewDTO> getAsianProducts(){
         return productService.getAsianProducts();
     }
     @GetMapping("/recommended")
-    public List<ProductDTO> getRecommendedProducts(){
+    public List<ProductPreviewDTO> getRecommendedProducts(){
         return productService.getRecommendedProducts();
     }
 
     @GetMapping("{id}")
-    public Optional<Product> findProductById(@PathVariable Long id){
+    public ProductDetailDTO findProductById(@PathVariable Long id){
         return productService.findProductById(id);
     }
 
@@ -53,18 +54,18 @@ public class ProductController {
 
 
     @PostMapping("/addProductList")
-    public ResponseEntity<?> addProduct(@RequestBody List<ProductDTO> products){
+    public ResponseEntity<?> addProduct(@RequestBody List<ProductRequestDTO> products){
         return ResponseEntity.ok(productService.addProductList(products));
     }
 
     @PostMapping("/addProduct")
-    public ResponseEntity<Product> addProduct(@RequestBody ProductDTO product){
+    public ResponseEntity<Product> addProduct(@RequestBody ProductRequestDTO product){
         return ResponseEntity.ok(productService.addProduct(product));
     }
 
     @PutMapping("/updateProduct")
-    public ResponseEntity<Product> updateProduct(@RequestBody ProductDTO productDTO) {
-        return ResponseEntity.ok(productService.updateProduct(productDTO));
+    public ResponseEntity<Product> updateProduct(@RequestBody ProductRequestDTO productRequestDTO) {
+        return ResponseEntity.ok(productService.updateProduct(productRequestDTO));
     }
 
     @DeleteMapping("{id}")
