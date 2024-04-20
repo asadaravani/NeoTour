@@ -1,8 +1,8 @@
-FROM bellsoft/liberica-openjdk-alpine-musl:17
+FROM adoptopenjdk/openjdk17:alpine
 
 WORKDIR /app
 
-COPY target/Neotour-0.0.1-SNAPSHOT.jar /app/NeoTour.jar
+COPY target/Neotour-0.0.1-SNAPSHOT.jar /app/Neotour.jar
 
 EXPOSE 8080
 
