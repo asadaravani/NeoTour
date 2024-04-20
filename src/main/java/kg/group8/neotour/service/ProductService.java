@@ -50,16 +50,20 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
     public List<ProductPreviewDTO> getRecommendedProducts(){
-        return null;
+        List<Product> recommendedProducts = productRepository.findRecommendedProducts();
+        return recommendedProducts.stream()
+                .map(this::mapProductToDTO)
+                .collect(Collectors.toList());
     }
     public ProductDetailDTO findProductById(Long id)throws ProductNotFoundException {
         Optional<Product> productOptional = productRepository.findById(id);
         Product product = productOptional.orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
         ProductDetailDTO productDetailDTO = new ProductDetailDTO();
         productDetailDTO.setId(product.getId());
-        productDetailDTO.setName(product.getName());
-        productDetailDTO.setDescription(product.getDescription());
         productDetailDTO.setImagePath(product.getImagePath());
+        productDetailDTO.setName(product.getName());
+        productDetailDTO.setLocation(product.getLocation());
+        productDetailDTO.setDescription(product.getDescription());
         productDetailDTO.setReviews(product.getReviews());
         return productDetailDTO;
     }
@@ -90,6 +94,7 @@ public class ProductService {
             product.setContinent(productRequestDTO.getContinent());
             product.setDescription(productRequestDTO.getDescription());
             product.setImagePath(productRequestDTO.getImagePath());
+            product.setSeason(productRequestDTO.getSeason());
             this.productRepository.save(product);
             return product;
         }
@@ -102,6 +107,8 @@ public class ProductService {
             updateProduct.setDescription(productRequestDTO.getDescription());
             updateProduct.setLocation(productRequestDTO.getLocation());
             updateProduct.setContinent(productRequestDTO.getContinent());
+            updateProduct.setSeason(productRequestDTO.getSeason());
+            updateProduct.setImagePath(productRequestDTO.getImagePath());
             this.productRepository.save(updateProduct);
             return updateProduct;
         }

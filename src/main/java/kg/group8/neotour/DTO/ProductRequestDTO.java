@@ -19,9 +19,6 @@ public class ProductRequestDTO {
     private String continent;
     private String description;
     private String imagePath;
-    private List<Review> reviews;
-    private BigDecimal OrderCount;
-    private Double rating;
     private String season;
 
 
