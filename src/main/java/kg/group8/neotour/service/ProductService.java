@@ -145,4 +145,11 @@ public class ProductService {
         productPreviewDTO.setImagePath(product.getImagePath());
         return productPreviewDTO;
     }
+
+    public ProductPreviewDTO addImageURL(String imageURL, Long productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        Product product = optionalProduct.orElseThrow(() -> new ProductNotFoundException("Product not found!"));
+        product.setImagePath(imageURL);
+        return mapProductToDTO(this.productRepository.save(product));
+    }
 }

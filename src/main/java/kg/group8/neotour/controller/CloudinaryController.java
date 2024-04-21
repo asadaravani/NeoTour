@@ -1,10 +1,12 @@
 package kg.group8.neotour.controller;
 
 import kg.group8.neotour.service.CloudinaryService;
+import kg.group8.neotour.service.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 
 @RestController
@@ -13,13 +15,16 @@ import java.io.IOException;
 @AllArgsConstructor
 public class CloudinaryController {
     CloudinaryService cloudinaryService;
-    @PostMapping("/upload")
-    public String uploadImage(@RequestParam MultipartFile file) {
+    ProductService productService;
+
+    @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> uploadImage(@RequestParam MultipartFile file, @RequestParam Long productId) {
         try {
-            return cloudinaryService.uploadImage(file);
+            String imageURL =  cloudinaryService.uploadImage(file);
+            return ResponseEntity.ok().body(productService.addImageURL(imageURL, productId));
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error uploading image";
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
