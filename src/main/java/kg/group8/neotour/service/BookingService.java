@@ -49,7 +49,7 @@ public class BookingService {
         return "Booking successful";
     }
     public String deleteBooking(Long id){
-        Booking booking = new Booking();
-        return "";
+        bookingRepository.deleteById(id);
+        return "Booking successfully deleted";
     }
 }
