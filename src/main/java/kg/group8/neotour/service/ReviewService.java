@@ -52,6 +52,7 @@ public class ReviewService {
         Optional<Review> optionalReview = reviewsRepository.findById(reviewId);
         Review review = optionalReview.orElseThrow(() -> new ProductNotFoundException("Review Not Found"));
         review.setReviewersImagePath(imageURL);
+        reviewsRepository.save(review);
         return mapReviewToDTO(review);
     }
 
@@ -59,7 +60,6 @@ public class ReviewService {
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setId(review.getId());
         reviewDTO.setComment(review.getComment());
-        reviewDTO.setProductId(reviewDTO.getProductId());
         reviewDTO.setReviewer(review.getReviewer());
         reviewDTO.setRating(review.getRating());
         reviewDTO.setReviewersImagePath(review.getReviewersImagePath());
