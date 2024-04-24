@@ -59,6 +59,7 @@ public class ReviewService {
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setId(review.getId());
         reviewDTO.setComment(review.getComment());
+        reviewDTO.setProductId(reviewDTO.getProductId());
         reviewDTO.setReviewer(review.getReviewer());
         reviewDTO.setRating(review.getRating());
         reviewDTO.setReviewersImagePath(review.getReviewersImagePath());
