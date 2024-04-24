@@ -3,8 +3,6 @@ package kg.group8.neotour.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -27,7 +25,7 @@ public class CloudinaryService {
         return (String) uploadResult.get("secure_url");
     }
 
-    public void deleteImage(String imageUrl) throws IOException {
+    public void deleteProductImage(String imageUrl) throws IOException {
         String publicId = extractPublicId(imageUrl);
         cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
     }

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReviewDTO {
     private Long id;
+    private String reviewersImagePath;
     private String reviewer;
     private Long productId;
     private Double rating;

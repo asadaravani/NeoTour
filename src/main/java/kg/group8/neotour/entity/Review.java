@@ -17,6 +17,9 @@ public class Review {
     private Long id;
 
     @Column
+    private String reviewersImagePath;
+
+    @Column
     private String reviewer;
 
     @Column

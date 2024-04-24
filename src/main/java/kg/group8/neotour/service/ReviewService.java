@@ -28,6 +28,7 @@ public class ReviewService {
         Review review = new Review();
         Optional<Product> optionalProduct = productRepository.findById(reviewDTO.getProductId());
         Product product = optionalProduct.orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
+        review.setReviewersImagePath(reviewDTO.getReviewersImagePath());
         review.setReviewer(reviewDTO.getReviewer());
         review.setComment(reviewDTO.getComment());
         review.setRating(reviewDTO.getRating());
@@ -42,7 +43,25 @@ public class ReviewService {
 
         return "Comment added successfully";
     }
-    public void deleteReview(Review review) {
+    public String deleteReview(Long review) {
+        reviewsRepository.deleteById(review);
+        return "Review deleted successfully";
+    }
 
+    public Object addImageURL(String imageURL, Long reviewId) {
+        Optional<Review> optionalReview = reviewsRepository.findById(reviewId);
+        Review review = optionalReview.orElseThrow(() -> new ProductNotFoundException("Review Not Found"));
+        review.setReviewersImagePath(imageURL);
+        return mapReviewToDTO(review);
+    }
+
+    private Object mapReviewToDTO(Review review) {
+        ReviewDTO reviewDTO = new ReviewDTO();
+        reviewDTO.setId(review.getId());
+        reviewDTO.setComment(review.getComment());
+        reviewDTO.setReviewer(review.getReviewer());
+        reviewDTO.setRating(review.getRating());
+        reviewDTO.setReviewersImagePath(review.getReviewersImagePath());
+        return reviewDTO;
     }
 }

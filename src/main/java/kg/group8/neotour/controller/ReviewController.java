@@ -3,6 +3,7 @@ package kg.group8.neotour.controller;
 import kg.group8.neotour.DTO.ReviewDTO;
 import kg.group8.neotour.entity.Review;
 import kg.group8.neotour.exception.EmptyFieldException;
+import kg.group8.neotour.exception.ProductNotFoundException;
 import kg.group8.neotour.service.ReviewService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,9 @@ public class ReviewController {
         }catch (EmptyFieldException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+    @DeleteMapping
+    public ResponseEntity<?> deleteReview(@PathVariable Long reviewId) throws ProductNotFoundException {
+        return ResponseEntity.ok().body(reviewService.deleteReview(reviewId));
     }
 }
