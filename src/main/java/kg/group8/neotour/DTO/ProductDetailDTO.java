@@ -17,5 +17,5 @@ public class ProductDetailDTO {
     private String location;
     private String description;
     private String imagePath;
-    private List<Review> reviews;
+    private List<ReviewDTO> reviews;
 }

@@ -28,4 +28,8 @@ public class Review {
     @Column
     private String comment;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    Product product;
+
 }

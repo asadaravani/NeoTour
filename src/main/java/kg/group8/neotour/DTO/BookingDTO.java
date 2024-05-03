@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class BookingDTO {
     private Long productId;
     private String phoneNumber;
-    private int amountOfPeople;
+    private Integer amountOfPeople;
     private String comment;
 }
