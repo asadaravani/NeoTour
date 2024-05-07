@@ -9,8 +9,10 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT p FROM Product p ORDER BY p.rating DESC, p.reviewCount DESC")
-    List<Product> findPopularProducts();
+//    @Query("SELECT p FROM Product p ORDER BY p.rating DESC, p.reviewCount DESC")
+//    List<Product> findPopularProducts();
+
+    List<Product> findAllByOrderByRatingDesc();
 
     @Query("SELECT p FROM Product p ORDER BY p.orderCount DESC")
     List<Product> findMostVisitedProducts();
@@ -18,11 +20,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p ORDER BY p.orderCount ASC")
     List<Product> findFeaturedProducts();
 
+//    List<Product> findAllByOrderCountAsc();
+
     @Query("SELECT p FROM Product p WHERE p.continent = 'Europe'")
     List<Product> findEuropeanProducts();
 
     @Query("SELECT p FROM Product p WHERE p.continent = 'Asia'")
     List<Product> findAsianProducts();
+
+//    List<Product> findAllByContinent(String continent);
 
     @Query("SELECT p FROM Product p WHERE p.season = 'spring'")
     List<Product> findRecommendedProducts();

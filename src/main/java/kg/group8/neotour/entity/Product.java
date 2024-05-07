@@ -1,10 +1,9 @@
 package kg.group8.neotour.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -13,16 +12,17 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @Column
-    private String name;
+    String name;
 
     @Column
-    private String imagePath;
+    String imagePath;
 
     @Column
     private String location;
@@ -36,9 +36,8 @@ public class Product {
     @Column
     private Double rating;
 
-
-    @OneToMany
-    private List<Review> reviews;
+    @OneToMany(mappedBy = "product")
+    List<Review> reviews;
 
 
     @Column
@@ -50,7 +49,7 @@ public class Product {
     @Column
     private BigDecimal reviewCount = BigDecimal.ZERO;
 
-    public void updateRatingAndReviewCount() {
+    public void updateRatingAndReviewCount() {//todo перенести в сервис
         if (this.reviews != null && !this.reviews.isEmpty()) {
             double totalRating = 0.0;
             for (Review review : this.reviews) {

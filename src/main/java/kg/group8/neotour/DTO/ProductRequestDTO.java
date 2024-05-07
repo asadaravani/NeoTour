@@ -1,22 +1,28 @@
 package kg.group8.neotour.DTO;
-import kg.group8.neotour.entity.Review;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
-import java.util.List;
+
+import jakarta.validation.constraints.NotEmpty;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductRequestDTO {
 
-    private Long id;
-    private String name;
-    private String location;
-    private String continent;
+
+    Long id;
+
+    @NotEmpty(message = "name must not be null or empty")
+    String name;
+
+    @NotEmpty
+    String location;
+
+    @NotEmpty
+    String continent;
+
     private String description;
     private String imagePath;
     private String season;

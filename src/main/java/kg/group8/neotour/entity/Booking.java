@@ -1,32 +1,31 @@
 package kg.group8.neotour.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @Column
-    private String phoneNumber;
+    String phoneNumber;
 
     @ManyToOne
-    @JoinColumn
-    private Product product;
+    @JoinColumn(name = "product_id", nullable = false)
+    Product product;
+
+    @Column(name = "amount_of_people", nullable = false)
+    Integer amountOfPeople;
 
     @Column
-    private int amountOfPeople;
-
-    @Column
-    private String comment;
+    String comment;
 
 }
