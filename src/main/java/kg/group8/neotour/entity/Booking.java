@@ -15,7 +15,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column
+    @Column(nullable = false)
     String phoneNumber;
 
     @ManyToOne

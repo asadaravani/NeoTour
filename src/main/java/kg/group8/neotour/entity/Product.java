@@ -18,51 +18,35 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column
+    @Column(nullable = false)
     String name;
 
     @Column
     String imagePath;
 
-    @Column
-    private String location;
+    @Column(nullable = false)
+    String location;
+
+    @Column(nullable = false)
+    String continent;
+
+    @Column(nullable = false)
+    String description;
 
     @Column
-    private String continent;
-
-    @Column
-    private String description;
-
-    @Column
-    private Double rating;
+    Double rating;
 
     @OneToMany(mappedBy = "product")
     List<Review> reviews;
 
+    @Column(nullable = false)
+    String season;
 
     @Column
-    private String season;
+    BigDecimal orderCount = BigDecimal.ZERO;
 
     @Column
-    private BigDecimal orderCount = BigDecimal.ZERO;
+    BigDecimal reviewCount = BigDecimal.ZERO;
 
-    @Column
-    private BigDecimal reviewCount = BigDecimal.ZERO;
-
-    public void updateRatingAndReviewCount() {//todo перенести в сервис
-        if (this.reviews != null && !this.reviews.isEmpty()) {
-            double totalRating = 0.0;
-            for (Review review : this.reviews) {
-                totalRating += review.getRating();
-            }
-            double averageRating = totalRating / this.reviews.size();
-            setRating(averageRating);
-            setReviewCount(BigDecimal.valueOf(this.reviews.size()));
-        } else {
-            setRating(2.5);
-            setReviewCount(BigDecimal.ZERO);
-        }
-
-    }
 
 }

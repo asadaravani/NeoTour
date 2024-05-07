@@ -1,12 +1,8 @@
 package kg.group8.neotour.controller;
 
-import kg.group8.neotour.DTO.ReviewDTO;
-import kg.group8.neotour.entity.Review;
-import kg.group8.neotour.exception.EmptyFieldException;
+import kg.group8.neotour.dto.ReviewDto;
 import kg.group8.neotour.service.ReviewService;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,26 +11,21 @@ import java.util.List;
 @RestController
 @RequestMapping("api/reviews")
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ReviewController {
 
-    ReviewService reviewService;
+    private final ReviewService reviewService;
 
     @GetMapping
-    public ResponseEntity<List<Review>> getAllReviews() {
-        return ResponseEntity.ok().body(reviewService.getReview());
+    public ResponseEntity<List<ReviewDto>> getAllReviews() {
+        return ResponseEntity.ok().body(reviewService.getAllReviews());
     }
 
     @PostMapping
-    public ResponseEntity<?> addReview(@RequestBody ReviewDTO reviewDTO) {
-        try {
-            return ResponseEntity.ok().body(reviewService.addReview(reviewDTO));
-        } catch (EmptyFieldException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<?> addReview(@RequestBody ReviewDto reviewDTO) {
+        return ResponseEntity.ok().body(reviewService.addReview(reviewDTO));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{reviewId}")
     public ResponseEntity<?> deleteReview(@PathVariable Long reviewId) {
         return ResponseEntity.ok().body(reviewService.deleteReview(reviewId));
     }

@@ -1,13 +1,11 @@
 package kg.group8.neotour.controller;
 
-import kg.group8.neotour.DTO.ProductDetailDTO;
-import kg.group8.neotour.DTO.ProductPreviewDTO;
-import kg.group8.neotour.DTO.ProductRequestDTO;
+import kg.group8.neotour.dto.response.ProductDetailDto;
+import kg.group8.neotour.dto.response.ProductPreviewDto;
+import kg.group8.neotour.dto.request.ProductRequestDto;
 import kg.group8.neotour.entity.Product;
 import kg.group8.neotour.service.ProductService;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,63 +15,57 @@ import java.util.List;
 @RestController
 @RequestMapping("api/products")
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductController {
 
-    ProductService productService;
+    private final ProductService productService;
 
     @GetMapping("/popular")
-    public List<ProductPreviewDTO> getPopularProducts() {
+    public List<ProductPreviewDto> getPopularProducts() {
         return productService.getPopularProducts();
     }
 
     @GetMapping("/mostVisited")
-    public List<ProductPreviewDTO> getMostVisitedProducts() {
+    public List<ProductPreviewDto> getMostVisitedProducts() {
         return productService.getMostVisitedProducts();
     }
 
     @GetMapping("/featured")
-    public List<ProductPreviewDTO> getFeaturedProducts() {
+    public List<ProductPreviewDto> getFeaturedProducts() {
         return productService.getFeaturedProducts();
     }
 
     @GetMapping("/europe")
-    public List<ProductPreviewDTO> getEuropeanProducts() {
+    public List<ProductPreviewDto> getEuropeanProducts() {
         return productService.getEuropeanProducts();
     }
 
     @GetMapping("/asia")
-    public List<ProductPreviewDTO> getAsianProducts() {
+    public List<ProductPreviewDto> getAsianProducts() {
         return productService.getAsianProducts();
     }
 
     @GetMapping("/recommended")
-    public List<ProductPreviewDTO> getRecommendedProducts() {
+    public List<ProductPreviewDto> getRecommendedProducts() {
         return productService.getRecommendedProducts();
     }
 
-    @GetMapping("{id}")
-    public ProductDetailDTO findProductById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ProductDetailDto findProductById(@PathVariable Long id) {
         return productService.findProductById(id);
     }
 
-    /**
-     * Below endpoints for the developer only
-     **/
-
-
     @PostMapping("/addProductList")
-    public ResponseEntity<?> addProduct(@Validated @RequestBody List<ProductRequestDTO> products) {
+    public ResponseEntity<?> addProduct(@Validated @RequestBody List<ProductRequestDto> products) {
         return ResponseEntity.ok(productService.addProductList(products));
     }
 
     @PostMapping("/addProduct")
-    public ResponseEntity<Product> addProduct(@RequestBody ProductRequestDTO product) {
+    public ResponseEntity<Product> addProduct(@RequestBody ProductRequestDto product) {
         return ResponseEntity.ok(productService.addProduct(product));
     }
 
     @PutMapping("/updateProduct")
-    public ResponseEntity<Product> updateProduct(@RequestBody ProductRequestDTO productRequestDTO) {
+    public ResponseEntity<Product> updateProduct(@RequestBody ProductRequestDto productRequestDTO) {
         return ResponseEntity.ok(productService.updateProduct(productRequestDTO));
     }
 
