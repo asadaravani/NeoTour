@@ -1,15 +1,14 @@
 package kg.group8.neotour.service;
 
-import kg.group8.neotour.DTO.BookingDTO;
-import kg.group8.neotour.entity.Booking;
+import kg.group8.neotour.dto.BookingDto;
 
 import java.util.List;
 
 public interface BookingService {
 
-    List<Booking> getAllBookings();
+    List<BookingDto> getAllBookings();
 
-    String book(BookingDTO bookingDTO);
+    String book(BookingDto bookingDTO);
 
     String deleteBooking(Long id);
 }

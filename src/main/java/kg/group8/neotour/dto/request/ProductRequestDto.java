@@ -1,4 +1,4 @@
-package kg.group8.neotour.DTO;
+package kg.group8.neotour.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -9,8 +9,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductRequestDTO {
-
+public class ProductRequestDto {
 
     Long id;
 
@@ -23,9 +22,14 @@ public class ProductRequestDTO {
     @NotEmpty
     String continent;
 
-    private String description;
-    private String imagePath;
-    private String season;
+    @NotEmpty
+    String description;
+
+    @NotEmpty
+    String imagePath;
+
+    @NotEmpty
+    String season;
 
 
 }
