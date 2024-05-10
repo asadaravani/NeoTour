@@ -1,6 +1,7 @@
 package kg.group8.neotour.controller;
 
-import kg.group8.neotour.dto.ReviewDto;
+import kg.group8.neotour.dto.request.ReviewRequestDto;
+import kg.group8.neotour.dto.response.ReviewResponseDto;
 import kg.group8.neotour.service.ReviewService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,13 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping
-    public ResponseEntity<List<ReviewDto>> getAllReviews() {
+    public ResponseEntity<List<ReviewResponseDto>> getAllReviews() {
         return ResponseEntity.ok().body(reviewService.getAllReviews());
     }
 
     @PostMapping
-    public ResponseEntity<?> addReview(@RequestBody ReviewDto reviewDTO) {
-        return ResponseEntity.ok().body(reviewService.addReview(reviewDTO));
+    public ResponseEntity<?> addReview(@RequestBody ReviewRequestDto reviewRequestDTO) {
+        return ResponseEntity.ok().body(reviewService.addReview(reviewRequestDTO));
     }
 
     @DeleteMapping("/{reviewId}")

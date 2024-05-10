@@ -3,7 +3,8 @@ package kg.group8.neotour.service.Impl;
 import kg.group8.neotour.dto.response.ProductDetailDto;
 import kg.group8.neotour.dto.response.ProductPreviewDto;
 import kg.group8.neotour.dto.request.ProductRequestDto;
-import kg.group8.neotour.dto.ReviewDto;
+import kg.group8.neotour.dto.request.ReviewRequestDto;
+import kg.group8.neotour.dto.response.ReviewResponseDto;
 import kg.group8.neotour.entity.Product;
 import kg.group8.neotour.entity.Review;
 import kg.group8.neotour.exception.EmptyFieldException;
@@ -162,18 +163,15 @@ public class ProductServiceImpl implements ProductService {
         return productPreviewDTO;
     }
 
-    private List<ReviewDto> mapReviewListToDto(List<Review> reviews) {
-        List<ReviewDto> reviewDtos = new ArrayList<>();
+    private List<ReviewResponseDto> mapReviewListToDto(List<Review> reviews) {
+        List<ReviewResponseDto> reviewRequestDtos = new ArrayList<>();
         reviews.forEach(review -> {
-            ReviewDto reviewDto = new ReviewDto();
-            reviewDto.setId(review.getId());
-            reviewDto.setReviewersImagePath(review.getReviewersImagePath());
-            reviewDto.setReviewer(review.getReviewer());
-            reviewDto.setProductId(review.getProduct().getId());
-            reviewDto.setRating(review.getRating());
-            reviewDto.setComment(review.getComment());
-            reviewDtos.add(reviewDto);
+            ReviewResponseDto reviewResponseDto = new ReviewResponseDto();
+            reviewResponseDto.setReviewersImagePath(review.getReviewersImagePath());
+            reviewResponseDto.setReviewer(review.getReviewer());
+            reviewResponseDto.setComment(review.getComment());
+            reviewRequestDtos.add(reviewResponseDto);
         });
-        return reviewDtos;
+        return reviewRequestDtos;
     }
 }
