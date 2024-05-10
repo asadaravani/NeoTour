@@ -1,6 +1,7 @@
 package kg.group8.neotour.service.Impl;
 
-import kg.group8.neotour.dto.ReviewDto;
+import kg.group8.neotour.dto.request.ReviewRequestDto;
+import kg.group8.neotour.dto.response.ReviewResponseDto;
 import kg.group8.neotour.entity.Product;
 import kg.group8.neotour.entity.Review;
 import kg.group8.neotour.exception.EmptyFieldException;
@@ -28,29 +29,23 @@ public class ReviewServiceImpl implements ReviewService{
     ProductService productService;
 
     @Override
-    public List<ReviewDto> getAllReviews() {
-        return mapReviewListToDto(reviewsRepository.findAll());
+    public List<ReviewResponseDto> getAllReviews() {
+        return mapReviewResponseListToDto(reviewsRepository.findAll());
     }
 
     @Override
-    public String addReview(ReviewDto reviewDTO) throws EmptyFieldException{
-        if (reviewDTO.getComment().isEmpty() || reviewDTO.getReviewer().isEmpty()){
+    public String addReview(ReviewRequestDto reviewRequestDTO) throws EmptyFieldException{
+        if (reviewRequestDTO.getComment().isEmpty() || reviewRequestDTO.getReviewer().isEmpty()){
             throw new EmptyFieldException("Comment and reviewer's name must be filled");
         }
         Review review = new Review();
-        review.setReviewersImagePath(reviewDTO.getReviewersImagePath());
-        review.setReviewer(reviewDTO.getReviewer());
-        review.setComment(reviewDTO.getComment());
-        review.setRating(reviewDTO.getRating());
-        Review savedReview = reviewsRepository.save(review);
-
-        Product product = productService.getById(reviewDTO.getProductId());
-        product.getReviews().add(savedReview);
-
-        updateRatingAndReviewCount(product);
-
-        productRepository.save(product);
-
+        review.setReviewersImagePath(reviewRequestDTO.getReviewersImagePath());
+        review.setReviewer(reviewRequestDTO.getReviewer());
+        review.setComment(reviewRequestDTO.getComment());
+        review.setRating(reviewRequestDTO.getRating());
+        review.setProduct(productService.getById(reviewRequestDTO.getProductId()));
+        updateRatingAndReviewCount(reviewRequestDTO.getProductId());
+        reviewsRepository.save(review);
         return "Comment added successfully";
     }
     @Override
@@ -67,18 +62,19 @@ public class ReviewServiceImpl implements ReviewService{
         return mapReviewToDTO(review);
     }
 
-    private ReviewDto mapReviewToDTO(Review review) {
-        ReviewDto reviewDTO = new ReviewDto();
-        reviewDTO.setId(review.getId());
-        reviewDTO.setComment(review.getComment());
-        reviewDTO.setReviewer(review.getReviewer());
-        reviewDTO.setRating(review.getRating());
-        reviewDTO.setProductId(review.getProduct().getId());
-        reviewDTO.setReviewersImagePath(review.getReviewersImagePath());
-        return reviewDTO;
+    private ReviewRequestDto mapReviewToDTO(Review review) {
+        ReviewRequestDto reviewRequestDTO = new ReviewRequestDto();
+        reviewRequestDTO.setId(review.getId());
+        reviewRequestDTO.setComment(review.getComment());
+        reviewRequestDTO.setReviewer(review.getReviewer());
+        reviewRequestDTO.setRating(review.getRating());
+        reviewRequestDTO.setProductId(review.getProduct().getId());
+        reviewRequestDTO.setReviewersImagePath(review.getReviewersImagePath());
+        return reviewRequestDTO;
     }
 
-    private void updateRatingAndReviewCount(Product product) {
+    private void updateRatingAndReviewCount(Long id) {
+        Product product = productService.getById(id);
         if (product.getReviews() != null && !product.getReviews().isEmpty()) {
             double totalRating = 0.0;
             for (Review review : product.getReviews()) {
@@ -91,13 +87,17 @@ public class ReviewServiceImpl implements ReviewService{
             product.setRating(2.5);
             product.setReviewCount(BigDecimal.ZERO);
         }
-
+        productRepository.save(product);
     }
-    private List<ReviewDto> mapReviewListToDto(List<Review> reviews) {
-        List<ReviewDto> reviewDtoList = new ArrayList<>();
+    private List<ReviewResponseDto> mapReviewResponseListToDto(List<Review> reviews) {
+        List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
         for (Review review : reviews) {
-            reviewDtoList.add(mapReviewToDTO(review));
+            ReviewResponseDto reviewResponseDto = new ReviewResponseDto();
+            reviewResponseDto.setReviewer(review.getReviewer());
+            reviewResponseDto.setReviewersImagePath(review.getReviewersImagePath());
+            reviewResponseDto.setComment(review.getComment());
+            reviewResponseDtoList.add(reviewResponseDto);
         }
-        return reviewDtoList;
+        return reviewResponseDtoList;
     }
 }

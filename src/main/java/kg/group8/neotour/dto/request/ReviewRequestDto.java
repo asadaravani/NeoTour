@@ -1,4 +1,4 @@
-package kg.group8.neotour.dto;
+package kg.group8.neotour.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ReviewDto {
+public class ReviewRequestDto {
     Long id;
 
     @NotEmpty

@@ -1,6 +1,6 @@
 package kg.group8.neotour.dto.response;
 
-import kg.group8.neotour.dto.ReviewDto;
+import kg.group8.neotour.dto.request.ReviewRequestDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,5 +17,5 @@ public class ProductDetailDto {
     String location;
     String description;
     String imagePath;
-    List<ReviewDto> reviews;
+    List<ReviewResponseDto> reviews;
 }

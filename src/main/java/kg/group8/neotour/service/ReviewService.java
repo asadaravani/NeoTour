@@ -1,14 +1,15 @@
 package kg.group8.neotour.service;
 
-import kg.group8.neotour.dto.ReviewDto;
+import kg.group8.neotour.dto.request.ReviewRequestDto;
+import kg.group8.neotour.dto.response.ReviewResponseDto;
 import kg.group8.neotour.exception.EmptyFieldException;
 
 import java.util.List;
 
 public interface ReviewService {
-    List<ReviewDto> getAllReviews();
+    List<ReviewResponseDto> getAllReviews();
 
-    String addReview(ReviewDto reviewDTO) throws EmptyFieldException;
+    String addReview(ReviewRequestDto reviewRequestDTO) throws EmptyFieldException;
 
     String deleteReview(Long review);
 
