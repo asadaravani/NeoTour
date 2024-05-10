@@ -73,6 +73,7 @@ public class ReviewServiceImpl implements ReviewService{
         reviewDTO.setComment(review.getComment());
         reviewDTO.setReviewer(review.getReviewer());
         reviewDTO.setRating(review.getRating());
+        reviewDTO.setProductId(review.getProduct().getId());
         reviewDTO.setReviewersImagePath(review.getReviewersImagePath());
         return reviewDTO;
     }
